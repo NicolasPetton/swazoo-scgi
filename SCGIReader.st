@@ -20,13 +20,13 @@ SwazooRequestReader subclass: SCGIReader [
 	self
 	    convertFieldNamed: 'HTTP_COOKIE' to: 'COOKIE';
 	    convertFieldNamed: 'HTTP_ACCEPT' to: 'ACCEPT';
-	    convertFieldNamed: 'HTTP_ACCEPT_CHARSET' to: 'ACCEPT_CHARSET';
-	    convertFieldNamed: 'HTTP_ACCEPT_ENCODING' to: 'CCEPT_ENCODING';
-	    convertFieldNamed: 'HTTP_ACCEPT_LANGUAGE' to: 'ACCEPT_LANGUAGE';
+	    convertFieldNamed: 'HTTP_ACCEPT_CHARSET' to: 'ACCEPT-CHARSET';
+	    convertFieldNamed: 'HTTP_ACCEPT_ENCODING' to: 'ACCEPT-ENCODING';
+	    convertFieldNamed: 'HTTP_ACCEPT_LANGUAGE' to: 'ACCEPT-LANGUAGE';
 	    convertFieldNamed: 'HTTP_AUTHORIZATION' to: 'AUTHORIZATION';
 	    convertFieldNamed: 'HTTP_HOST' to: 'HOST';
 	    convertFieldNamed: 'HTTP_REFERER' to: 'REFERER';
-	    convertFieldNamed: 'HTTP_USER_AGENT' to: 'USER_AGENT'
+	    convertFieldNamed: 'HTTP_USER_AGENT' to: 'USER-AGENT'
     ]
 
     readHeaders [
