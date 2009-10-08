@@ -1,0 +1,15 @@
+<package>
+  <name>Swazoo-SCGI</name>
+  <namespace>Swazoo</namespace>
+    <filein>SCGIReader.st</filein>
+    <filein>SCGIPrinter.st</filein>
+    <filein>SCGIServer.st</filein>
+    <filein>SCGIIdentifier.st</filein>
+    <filein>Extensions.st</filein>
+
+    <file>SCGIReader.st</file>
+    <file>SCGIPrinter.st</file>
+    <file>SCGIServer.st</file>
+    <file>SCGIIdentifier.st</file>
+    <file>Extensions.st</file>
+</package>
