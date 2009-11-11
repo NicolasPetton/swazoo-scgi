@@ -1,5 +1,5 @@
 URIIdentifier subclass: SCGIIdentifier [
-    | ip port host |
+    | port |
     
     <comment: nil>
     <category: 'Swazoo-SCGI'>
@@ -32,6 +32,10 @@ URIIdentifier subclass: SCGIIdentifier [
 	port := aNumber
     ]
 
+    ip [
+	^'0.0.0.0'
+    ]
+
     isEmpty [
 	<category: 'testing'>
 	^port isNil
@@ -49,9 +53,7 @@ URIIdentifier subclass: SCGIIdentifier [
 
     printString [
 	<category: 'private'>
-	^'a Swazoo.SCGIIndentifier
-	ip: ' 
-	    , (self ip isNil ifTrue: [''] ifFalse: [self ip])
+	^'a Swazoo.SCGIIndentifier'
     ]
 
     printUrlOn: aWriteStream [

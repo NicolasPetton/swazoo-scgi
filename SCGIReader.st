@@ -20,6 +20,7 @@ SwazooRequestReader subclass: SCGIReader [
     convertHeaders [
 	<category: 'private'>
 	self
+	    convertFieldNamed: 'HTTP_CONTENT_LENGTH' to: 'CONTENT-LENGTH';
 	    convertFieldNamed: 'HTTP_COOKIE' to: 'COOKIE';
 	    convertFieldNamed: 'HTTP_ACCEPT' to: 'ACCEPT';
 	    convertFieldNamed: 'HTTP_ACCEPT_CHARSET' to: 'ACCEPT-CHARSET';
@@ -28,7 +29,8 @@ SwazooRequestReader subclass: SCGIReader [
 	    convertFieldNamed: 'HTTP_AUTHORIZATION' to: 'AUTHORIZATION';
 	    convertFieldNamed: 'HTTP_HOST' to: 'HOST';
 	    convertFieldNamed: 'HTTP_REFERER' to: 'REFERER';
-	    convertFieldNamed: 'HTTP_USER_AGENT' to: 'USER-AGENT'
+	    convertFieldNamed: 'HTTP_USER_AGENT' to: 'USER-AGENT';
+	    convertFieldNamed: 'CONTENT_TYPE' to: 'CONTENT-TYPE'
     ]
 
     readHeaders [
