@@ -72,6 +72,7 @@ SwazooRequestReader subclass: SCGIReader [
 	<category: 'parsing'>
 	self readHeaders.
 	request := (HTTPRequest classFor: self method) new.
+	self httpVersion: #(0 0).
 	fields do: [:each |
 	    request headers addField: each].
 	self convertHeaders.
