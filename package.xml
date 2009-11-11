@@ -1,5 +1,6 @@
 <package>
   <name>Swazoo-SCGI</name>
+  <prereq>Swazoo</prereq>
   <namespace>Swazoo</namespace>
     <filein>SCGIReader.st</filein>
     <filein>SCGIPrinter.st</filein>

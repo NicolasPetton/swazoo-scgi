@@ -3,8 +3,7 @@ SwazooSite extend [
 	<category: '*Swazoo-SCGI'>
 	"This is ugly. #initialize shouldn't add a SiteIdentifier"
 	(self uriPattern notEmpty and: [
-		(self uriPattern first class includesBehavior: Swazoo.SCGIIdentifier) not]) ifTrue: [
-			self uriPattern removeAll].
+		(self uriPattern first class includesBehavior: Swazoo.SCGIIdentifier) not]) ifTrue: [uriPattern := OrderedCollection new].
 	self uriPattern isEmpty ifTrue: [self uriPattern add: SCGIIdentifier new].
 	self uriPattern first port: aNumber
     ]
@@ -28,10 +27,10 @@ SwazooStream extend [
 	<category: '*Swazoo-SCGI'>
 	| size c |
 	size := 0.
-	[(c := self next) = 58] whileFalse: [
-		(c < 48 or: [c > 57]) ifTrue: [
-			^self error: 'invalid net string'].
-		size := (size * 10) + (c - 48)].
+	[(c := self next) value = 58] whileFalse: [
+	    (c value < 48 or: [c value > 57]) ifTrue: [
+		    ^self error: 'invalid net string'].
+	    size := (size * 10) + (c value - 48)].
 	^size
     ]	
 ]
