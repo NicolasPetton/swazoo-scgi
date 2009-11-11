@@ -1,4 +1,5 @@
 SwazooSite extend [
+    
     scgiPort: aNumber [
 	<category: '*Swazoo-SCGI'>
 	"This is ugly. #initialize shouldn't add a SiteIdentifier"
@@ -7,6 +8,25 @@ SwazooSite extend [
 	self uriPattern isEmpty ifTrue: [self uriPattern add: SCGIIdentifier new].
 	self uriPattern first port: aNumber
     ]
+
+    uriIdentifier [^self uriPattern first] 
+]
+
+URIResolution extend [
+
+   siteMatch: aSite [
+	<category: 'private'>
+	| siteIdentifier hostName |
+	hostName := self request headers 
+	    fieldOfClass: HTTPHostField
+	    ifPresent: [:field | field hostName]
+	    ifAbsent: [self request requestLine requestURI hostname].
+	siteIdentifier := aSite uriIdentifier class
+	    host: (hostName notNil ifTrue: [hostName] ifFalse: [''])
+	    ip: self request ip
+	    port: self request port.
+	^aSite match: siteIdentifier
+    ] 
 ]
 
 SwazooStream extend [

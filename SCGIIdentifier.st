@@ -9,6 +9,11 @@ URIIdentifier subclass: SCGIIdentifier [
 	^self new setPort: aPort
     ]
 
+    SCGIIdentifier class >> host: aString ip: anotherString port: aPort [
+	<category: 'instance creation'>
+	^self port: aPort
+    ]
+
     currentUrl [
 	<category: 'accessing'>
 	| stream |
