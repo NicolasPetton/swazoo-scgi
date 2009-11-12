@@ -4,47 +4,18 @@ SwazooRequestReader subclass: SCGIReader [
     <comment: nil>
     <category: 'Swazoo-SCGI'>
 
-    convertFieldNamed: aString to: anotherString [
-	"Convert header fields from SCGI standard to HTTP for Swazoo request"
-	<category: 'private'>
-	request headers 
-	    fieldNamed: aString
-	    ifPresent: [:header |
-		request headers addField: 
-		    (HeaderField 
-			name: anotherString
-			value: header value)]
-	    ifAbsent: []
-    ]
-
-    convertHeaders [
-	<category: 'private'>
-	self
-	    convertFieldNamed: 'HTTP_CONTENT_LENGTH' to: 'CONTENT-LENGTH';
-	    convertFieldNamed: 'HTTP_COOKIE' to: 'COOKIE';
-	    convertFieldNamed: 'HTTP_ACCEPT' to: 'ACCEPT';
-	    convertFieldNamed: 'HTTP_ACCEPT_CHARSET' to: 'ACCEPT-CHARSET';
-	    convertFieldNamed: 'HTTP_ACCEPT_ENCODING' to: 'ACCEPT-ENCODING';
-	    convertFieldNamed: 'HTTP_ACCEPT_LANGUAGE' to: 'ACCEPT-LANGUAGE';
-	    convertFieldNamed: 'HTTP_AUTHORIZATION' to: 'AUTHORIZATION';
-	    convertFieldNamed: 'HTTP_HOST' to: 'HOST';
-	    convertFieldNamed: 'HTTP_REFERER' to: 'REFERER';
-	    convertFieldNamed: 'HTTP_USER_AGENT' to: 'USER-AGENT';
-	    convertFieldNamed: 'CONTENT_TYPE' to: 'CONTENT-TYPE'
-    ]
-
     readHeaders [
 	<category: 'parsing'>
 	| uriHeader methodHeader |
 	self readHeadersFrom: stream readNetString.
 	uriHeader := fields
-	    detect: [:each | each name asUppercase = 'REQUEST_URI']
+	    detect: [:each | each name asUppercase = 'REQUEST-URI']
 	    ifNone: [nil].
 	self requestURI: (SwazooURI fromString: (uriHeader 
 	    ifNil: [''] 
 	    ifNotNil: [uriHeader value])).
 	methodHeader := fields
-	    detect: [:each | each name asUppercase = 'REQUEST_METHOD']
+	    detect: [:each | each name asUppercase = 'REQUEST-METHOD']
 	    ifNone: [nil].
 	self method: (methodHeader 
 	    ifNil: ['GET'] 
@@ -65,7 +36,9 @@ SwazooRequestReader subclass: SCGIReader [
 	key := aString copyFrom: start to: end - 1.
 	valueEnd := aString indexOf: zero startingAt: end + 1.
 	value := aString copyFrom: end + 1 to: valueEnd - 1.
-	fields add: (HeaderField name: key value: value).
+	fields add: (HeaderField 
+	    name: (self convertFieldName: key) 
+	    value: value).
 	valueEnd = aString size] 
 	    whileFalse: [start := valueEnd + 1]
     ]
@@ -76,11 +49,19 @@ SwazooRequestReader subclass: SCGIReader [
 	request := (HTTPRequest classFor: self method) new.
 	self httpVersion: #(0 0).
 	fields do: [:each |
-	    request headers addField: each].
-	self convertHeaders.
+	    request headers 
+		fieldOfClass: each class
+		ifNone: [request headers addField: each]].
 	request requestLine: requestLine.
 	self request setTimestamp.
 	self readBody.
+    ]
+
+    convertFieldName: aString [
+	<category: 'private'>
+	^(aString 
+	    copyReplacingAllRegex: '^HTTP_' with: '')
+	    copyReplacingAllRegex: '_' with: '-'
     ]
 ]
 
